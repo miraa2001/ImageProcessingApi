@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Process Image</h1>
+      <form id="processForm">
+        <input type="text" name="filename" placeholder="Filename (without ext)" required />
+        <input type="number" name="width" placeholder="Width" required />
+        <input type="number" name="height" placeholder="Height" required />
+        <label><input type="checkbox" name="bw" /> Black & White</label>
+        <button type="submit">Process</button>
+      </form>
+      <div id="result" style="margin-top:20px;"></div>
+      <p><a href="/index.html">⬅ Back to gallery</a></p>
+    </div>
+
+    <script>
+      document.getElementById("processForm").addEventListener("submit", e => {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const filename = data.get("filename");
+        const width = data.get("width");
+        const height = data.get("height");
+        const bw = data.get("bw") ? "true" : "false";
+
+        const img = document.createElement("img");
+        img.src = `/resize?filename=${filename}&width=${width}&height=${height}&bw=${bw}`;
+        img.style.marginTop = "20px";
+
+        const result = document.getElementById("result");
+        result.innerHTML = "";
+        result.appendChild(img);
+      });
+    </script>
+  </body>
+</html>

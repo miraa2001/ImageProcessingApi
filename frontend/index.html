@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Thumbnail Gallery</h1>
+      <div id="gallery" style="display:flex;flex-wrap:wrap;justify-content:center;"></div>
+      <p>
+        <a href="/upload.html">Upload Image</a> |
+        <a href="/process.html">Process Image</a>
+      </p>
+    </div>
+    //display images dynamically
+    <script>
+      fetch("/gallery")
+        .then(res => res.json())
+        .then(images => {
+          const gallery = document.getElementById("gallery");
+          images.forEach(img => {
+            const el = document.createElement("img");
+            el.src = img;
+            el.style.width = "150px";
+            gallery.appendChild(el);
+          });
+        });
+    </script>
+  </body>
+</html>
