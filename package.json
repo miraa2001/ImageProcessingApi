@@ -5,7 +5,6 @@
   "scripts": {
     "test": "npm run build && jasmine",
     "lint": "eslint \"src/**/*.{ts,js}\"",
-    "lintFix": "eslint \"src/**/*.{ts,js}\" --fix",
     "format": "prettier --write \"**/*.{ts,js,json,md}\"",
     "start": "node dist/src/.",
     "build": "npx tsc"
