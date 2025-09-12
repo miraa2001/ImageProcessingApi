@@ -26,6 +26,7 @@ router.get(
       const width: number = parseInt(req.query.width as string);
       const height: number = parseInt(req.query.height as string);
       const filename: string = req.query.filename as string;
+      const blackAndWhiteEffect = (req.query.bw as string) === "true";
 
       if (!filename) {
         return res.status(400).send("Missing 'filename' query parameter");
@@ -42,10 +43,11 @@ router.get(
       }
 
       const extension = path.extname(filePath);
+      const blackAndWhiteFlag = blackAndWhiteEffect ? "_bw" : "";
       const resizedFilePath = path.resolve(
         "assets",
         "resized",
-        `${filename}_resized_${width}x${height}${extension}`
+        `${filename}_resized_${width}x${height}${blackAndWhiteFlag}${extension}`
       );
 
       fs.mkdirSync(path.dirname(resizedFilePath), { recursive: true });
@@ -53,9 +55,14 @@ router.get(
       if (fs.existsSync(resizedFilePath)) {
         return res.sendFile(resizedFilePath);
       }
-
-      await sharp(filePath).resize(width, height).toFile(resizedFilePath);
-
+      if (blackAndWhiteEffect) {
+        await sharp(filePath)
+          .resize(width, height)
+          .grayscale()
+          .toFile(resizedFilePath);
+      } else {
+        await sharp(filePath).resize(width, height).toFile(resizedFilePath);
+      }
       return res.status(200).sendFile(resizedFilePath);
     } catch (err) {
       console.error(err);

@@ -8,23 +8,45 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const sharp_1 = __importDefault(require("sharp"));
+const fs_1 = __importDefault(require("fs"));
+const middleware_1 = __importDefault(require("../middleware/middleware"));
 const router = express_1.default.Router();
-router.get("/resize", async (req, res) => {
+const fileExtensions = [".jpg", ".jpeg", ".png"];
+function checkFile(fileName) {
+  for (const extension of fileExtensions) {
+    const file = path_1.default.resolve("assets", fileName + extension);
+    if (fs_1.default.existsSync(file)) {
+      return file;
+    }
+  }
+  return null;
+}
+router.get("/resize", middleware_1.default, async (req, res) => {
   try {
     const width = parseInt(req.query.width);
     const height = parseInt(req.query.height);
     const filename = req.query.filename;
-    const filePath = path_1.default.resolve("assets/" + filename);
-    const resizedFilePath = path_1.default.resolve(
-      "assets",
-      "resized",
-      `${filename}_resized.jpg`
-    );
     if (!filename) {
       return res.status(400).send("Missing 'filename' query parameter");
     }
     if (isNaN(width) || isNaN(height)) {
       return res.status(400).send("Width and height must be numbers");
+    }
+    const filePath = checkFile(filename);
+    if (!filePath) {
+      return res.status(404).send(`File not found for base name: ${filename}`);
+    }
+    const extension = path_1.default.extname(filePath);
+    const resizedFilePath = path_1.default.resolve(
+      "assets",
+      "resized",
+      `${filename}_resized_${width}x${height}${extension}`
+    );
+    fs_1.default.mkdirSync(path_1.default.dirname(resizedFilePath), {
+      recursive: true,
+    });
+    if (fs_1.default.existsSync(resizedFilePath)) {
+      return res.sendFile(resizedFilePath);
     }
     await (0, sharp_1.default)(filePath)
       .resize(width, height)

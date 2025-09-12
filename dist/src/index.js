@@ -13,4 +13,5 @@ app.use("/", router_1.default);
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+exports.default = app;
 //# sourceMappingURL=index.js.map
