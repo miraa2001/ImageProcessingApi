@@ -10,7 +10,7 @@ router.get("/gallery", (req, res) => {
     return res.json([]);
   }
 
-  const files = fs.readdirSync(resizedDir).map(f => "/assets/resized/" + f);
+  const files = fs.readdirSync(resizedDir).map((f) => "/assets/resized/" + f);
   console.log(`[GALLERY] Returning ${files.length} thumbnails`);
   res.json(files);
 });

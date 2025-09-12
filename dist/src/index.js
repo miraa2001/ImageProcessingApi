@@ -12,7 +12,6 @@ const app = (0, express_1.default)();
 const port = 3000;
 // serve frontend
 app.use(express_1.default.static(path_1.default.resolve(process.cwd(), "frontend")));
-// serve assets so <img src="/assets/..."> works
 app.use("/assets", express_1.default.static(path_1.default.resolve("assets")));
 // API routes
 app.use("/", resize_1.default);

@@ -5,14 +5,14 @@
   </head>
   <body>
     <div class="container">
-      <h1>Thumbnail Gallery</h1>
+      <h1>Cached Images Gallery</h1>
       <div id="gallery" style="display:flex;flex-wrap:wrap;justify-content:center;"></div>
       <p>
         <a href="/upload.html">Upload Image</a> |
         <a href="/process.html">Process Image</a>
       </p>
     </div>
-    //display images dynamically
+    <!-- display images dynamically -->
     <script>
       fetch("/gallery")
         .then(res => res.json())

@@ -1,6 +1,5 @@
 import request from "supertest";
-import app from "../index"; // make sure index.ts exports `app`
-
+import app from "../index";
 describe("Image Processing API /resize endpoint", () => {
   it("should return 400 if no query parameters are provided", async () => {
     const res = await request(app).get("/resize");

@@ -15,7 +15,7 @@ jasmine.getEnv().clearReporters();
 jasmine.getEnv().addReporter(
   new SpecReporter({
     spec: {
-      displayStacktrace: StacktraceOption.PRETTY, // ✅ show no stack unless failure
+      displayStacktrace: StacktraceOption.PRETTY,
     },
     customProcessors: [CustomProcessor],
   })

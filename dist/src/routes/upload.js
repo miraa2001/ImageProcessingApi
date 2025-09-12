@@ -9,7 +9,7 @@ const path_1 = __importDefault(require("path"));
 const router = express_1.default.Router();
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => cb(null, path_1.default.resolve("assets")),
-    filename: (req, file, cb) => cb(null, file.originalname)
+    filename: (req, file, cb) => cb(null, file.originalname),
 });
 const upload = (0, multer_1.default)({ storage });
 router.post("/upload", upload.single("image"), (req, res) => {
