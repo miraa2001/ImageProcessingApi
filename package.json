@@ -1,0 +1,30 @@
+{
+  "name": "image-processing-api-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "run npm build & run npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miraa2001/ImageProcessingApi.git"
+  },
+  "author": "Mira Jamous",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miraa2001/ImageProcessingApi/issues"
+  },
+  "homepage": "https://github.com/miraa2001/ImageProcessingApi#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/jasmine": "^5.1.9",
+    "@types/node": "^24.3.1",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "jasmine": "^5.10.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.9.2"
+  }
+}
