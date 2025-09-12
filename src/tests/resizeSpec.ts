@@ -21,7 +21,9 @@ describe("Image Processing API /resize endpoint", () => {
       "/resize?filename=christmas&width=200&height=200"
     );
     expect(res.status).toBe(404);
-    expect(res.text).toContain("File not found for base name: christmas");
+    expect(res.text).toContain(
+      "File not found or file type is not supported for base name: christmas"
+    );
   });
 
   it("should return 200 and an image when valid parameters are given", async () => {
