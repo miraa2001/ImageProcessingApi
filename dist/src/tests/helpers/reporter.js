@@ -2,15 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const jasmine_spec_reporter_1 = require("jasmine-spec-reporter");
 class CustomProcessor extends jasmine_spec_reporter_1.DisplayProcessor {
-    displayJasmineStarted(info) {
-        return `Running ${info.totalSpecsDefined} specs\n`;
-    }
+  displayJasmineStarted(info, log) {
+    return `Running suite with ${info.totalSpecsDefined} tests`;
+  }
 }
 jasmine.getEnv().clearReporters();
-jasmine.getEnv().addReporter(new jasmine_spec_reporter_1.SpecReporter({
+jasmine.getEnv().addReporter(
+  new jasmine_spec_reporter_1.SpecReporter({
     spec: {
-        displayStacktrace: jasmine_spec_reporter_1.StacktraceOption.PRETTY,
+      displayStacktrace: jasmine_spec_reporter_1.StacktraceOption.PRETTY,
     },
     customProcessors: [CustomProcessor],
-}));
+  })
+);
 //# sourceMappingURL=reporter.js.map

@@ -1,67 +1,79 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const path_1 = __importDefault(require("path"));
-const sharp_1 = __importDefault(require("sharp"));
-const fs_1 = __importDefault(require("fs"));
 const middleware_1 = __importDefault(require("../middleware/middleware"));
+const imageProcessor_1 = require("../utilities/imageProcessor");
 const router = express_1.default.Router();
-const fileExtensions = [".jpg", ".jpeg", ".png"];
-function checkFile(fileName) {
-    for (const extension of fileExtensions) {
-        const file = path_1.default.resolve("assets", fileName + extension);
-        if (fs_1.default.existsSync(file)) {
-            return file;
-        }
-    }
-    return null;
-}
 router.get("/resize", middleware_1.default, async (req, res) => {
-    try {
-        const width = parseInt(req.query.width);
-        const height = parseInt(req.query.height);
-        const filename = req.query.filename;
-        const blackAndWhiteEffect = req.query.bw === "true";
-        if (!filename) {
-            return res.status(400).send("Missing 'filename' query parameter");
-        }
-        if (isNaN(width) || isNaN(height)) {
-            return res.status(400).send("Width and height must be numbers");
-        }
-        const filePath = checkFile(filename);
-        if (!filePath) {
-            return res
-                .status(404)
-                .send(`File not found or file type is not supported for base name: ${filename}`);
-        }
-        const extension = path_1.default.extname(filePath);
-        const blackAndWhiteFlag = (blackAndWhiteEffect ? "_bw" : "");
-        const resizedFilePath = path_1.default.resolve("assets", "resized", `${filename}_resized_${width}x${height}${blackAndWhiteFlag}${extension}`);
-        fs_1.default.mkdirSync(path_1.default.dirname(resizedFilePath), { recursive: true });
-        if (fs_1.default.existsSync(resizedFilePath)) {
-            console.log(`[CACHE HIT] Serving cached image: ${resizedFilePath}`);
-            return res.sendFile(resizedFilePath);
-        }
-        if (blackAndWhiteEffect) {
-            await (0, sharp_1.default)(filePath)
-                .resize(width, height)
-                .grayscale()
-                .toFile(resizedFilePath);
-            console.log(`[PROCESSED] Created new black & white image: ${resizedFilePath}`);
-        }
-        else {
-            await (0, sharp_1.default)(filePath).resize(width, height).toFile(resizedFilePath);
-            console.log(`[PROCESSED] Created new image: ${resizedFilePath}`);
-        }
-        return res.status(200).sendFile(resizedFilePath);
+  try {
+    const filename = req.query.filename?.trim();
+    const widthStr = req.query.width;
+    const heightStr = req.query.height;
+    const blackAndWhiteEffect = req.query.bw === "true";
+    // Validate filename
+    if (!filename) {
+      res.status(400).send("Error: 'filename' query parameter is required.");
+      return;
     }
-    catch (err) {
-        console.error(err);
-        return res.status(500).send("Error processing image");
+    // Validate presence of width and height
+    if (!widthStr || !heightStr) {
+      res
+        .status(400)
+        .send(
+          "Error: Both 'width' and 'height' query parameters are required."
+        );
+      return;
     }
+    // Allow optional leading minus sign, then validate positivity later
+    if (!/^-?\d+$/.test(widthStr) || !/^-?\d+$/.test(heightStr)) {
+      res
+        .status(400)
+        .send(
+          "Error: 'width' and 'height' must be whole numbers without letters or symbols."
+        );
+      return;
+    }
+    const width = parseInt(widthStr, 10);
+    const height = parseInt(heightStr, 10);
+    // Validate positive integers
+    if (width <= 0 || height <= 0) {
+      res
+        .status(400)
+        .send(
+          "Error: 'width' and 'height' must be positive integers greater than 0."
+        );
+      return;
+    }
+    // Check if file exists
+    const filePath = (0, imageProcessor_1.checkFile)(filename);
+    if (!filePath) {
+      res
+        .status(404)
+        .send(
+          `Error: No file found for base name '${filename}'. Please check the filename.`
+        );
+      return;
+    }
+    // Process image
+    const resizedFilePath = await (0, imageProcessor_1.processImage)(
+      filePath,
+      filename,
+      width,
+      height,
+      blackAndWhiteEffect
+    );
+    res.status(200).sendFile(resizedFilePath);
+    return;
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error processing image.");
+    return;
+  }
 });
 exports.default = router;
 //# sourceMappingURL=resize.js.map

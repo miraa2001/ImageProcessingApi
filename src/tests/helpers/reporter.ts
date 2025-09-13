@@ -3,11 +3,10 @@ import {
   SpecReporter,
   StacktraceOption,
 } from "jasmine-spec-reporter";
-import SuiteInfo = jasmine.SuiteInfo;
 
 class CustomProcessor extends DisplayProcessor {
-  public displayJasmineStarted(info: SuiteInfo): string {
-    return `Running ${info.totalSpecsDefined} specs\n`;
+  public displayJasmineStarted(info: jasmine.SuiteInfo): string {
+    return `Running suite with ${info.totalSpecsDefined} tests`;
   }
 }
 

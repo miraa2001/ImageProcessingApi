@@ -4,13 +4,18 @@ import path from "path";
 
 const router = express.Router();
 
-router.get("/gallery", (req, res) => {
-  const resizedDir = path.resolve("assets/resized");
+router.get("/gallery", (req: express.Request, res: express.Response): void => {
+  const resizedDir: string = path.resolve("assets/resized");
+
   if (!fs.existsSync(resizedDir)) {
-    return res.json([]);
+    res.json([]);
+    return;
   }
 
-  const files = fs.readdirSync(resizedDir).map((f) => "/assets/resized/" + f);
+  const files: string[] = fs
+    .readdirSync(resizedDir)
+    .map((f: string) => "/assets/resized/" + f);
+
   console.log(`[GALLERY] Returning ${files.length} thumbnails`);
   res.json(files);
 });

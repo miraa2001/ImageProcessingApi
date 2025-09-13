@@ -1,6 +1,7 @@
-# __Image Processing API Project__
+# **Image Processing API Project**
 
 #### A Node.js + TypeScript API for uploading, resizing, caching, and processing images, with a simple frontend for uploading, viewing, and transforming images.
+
 ## Features
 
 1-Resize images by width and height via query params
@@ -16,22 +17,22 @@
 6-Interactive processing frontend to pick an image and resize/apply effects
 
 ## Getting Started
+
 1. Clone the repo
-   
+
 <pre> bash git clone https://github.com/&lt;your-username&gt;/ImageProcessingApi.git 
  cd ImageProcessingApi </pre>
 
-
 2. Install dependencies
-   
+
 <pre>npm install</pre>
 
 3. Build and test the project
-   
+
 <pre>npm run test</pre>
 
 4. Start the server
-   
+
 <pre>npm run start</pre>
 
 ## Frontend
@@ -79,7 +80,9 @@
 `npm run test` → Build + run Jasmine tests
 
 ## Screenshots
+
 #### Upload page: takes an image and uploads it to the assets folder
+
 <img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/0320177d-5eea-469e-bc9c-3d594e936157" />
 
 #### Process page: takes an image name and the preferred size and an optional black and white filter option and resizes the image after clicking process
@@ -97,4 +100,3 @@
 #### This page contains all of the previously cached already resized images
 
 <img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/abfe903c-785b-4aab-bd4c-331549d38287" />
-

@@ -53,4 +53,4 @@ describe("Image Processing API /resize endpoint", () => {
     expect(res.headers["content-type"]).toMatch(/image/);
   });
 });
-//# sourceMappingURL=resizeSpec.js.map
+//# sourceMappingURL=apiSpec.js.map
